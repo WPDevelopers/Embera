@@ -54,7 +54,11 @@ class OembedClient
         if ($this->config['fake_responses'] == Embera::ONLY_FAKE_RESPONSES) {
             $response = $this->processFakeResponse($provider->getProviderName(), $provider->getFakeResponse());
         } else {
-           $response = $this->lookup($provider);
+	        try {
+		        $response = $this->lookup($provider);
+	        }catch (\Exception $e) {
+		        $response['error'] = $e->getMessage();
+	        }
         }
 
         return $provider->modifyResponse($response);
