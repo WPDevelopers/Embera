@@ -20,6 +20,8 @@ use Embera\Url;
  */
 class Facebook extends ProviderAdapter implements ProviderInterface
 {
+	/** inline {@inheritdoc} */
+	protected $shouldSendRequest = false;
     /** inline {@inheritdoc} */
     protected $endpoint = 'https://graph.facebook.com/v8.0/oembed_{type}';
 
@@ -144,44 +146,51 @@ class Facebook extends ProviderAdapter implements ProviderInterface
         return $url;
     }
 
-    /** inline {@inheritdoc} */
-    public function modifyResponse(array $response = [])
-    {
-        if (!empty($response['html'])) {
+	/** inline {@inheritdoc} */
+	public function getStaticResponse() {
+		$response = [];
+		$params =$this->getParams();
+		$embedUrl = 'https://www.facebook.com/plugins/post.php?href={url}&width={width}&height={height}&show_text=true';
+		$height= 680;
+		$width = 500;
+		$attr = [];
+		$attr[] = 'class="embera-facebook-iframe-{md5}"';
+		$attr[] = 'src="' . $embedUrl . '"';
+		$attr[] = 'width="{width}"';
+		$attr[] = 'height="{height}"';
+		$attr[] = 'style="border:none;overflow:hidden"';
+		$attr[] = 'scrolling="no"';
+		$attr[] = 'frameborder="0"';
+		$attr[] = 'allowTransparency="true"';
 
-            // Backup the real response
-            $response['html_original'] = $response['html'];
-            $embedUrl = 'https://www.facebook.com/plugins/post.php?href={url}&width={width}&height={height}&show_text=true&appId';
+		$iframe = '<iframe ' . implode(' ', $attr) . '></iframe>';
+		if (!empty($params['maxheight'])) {
+			$height = $params['maxheight'];
+		} else {
+			if (!empty($params['maxwidth'])){
+				$height = min(680, (int) ($params['maxwidth'] + 100));
+			}
+		}
 
-            $attr = [];
-            $attr[] = 'class="embera-facebook-iframe-{md5}"';
-            $attr[] = 'src="' . $embedUrl . '"';
-            $attr[] = 'width="{width}"';
-            $attr[] = 'height="{height}"';
-            $attr[] = 'style="border:none;overflow:hidden"';
-            $attr[] = 'scrolling="no"';
-            $attr[] = 'frameborder="0"';
-            $attr[] = 'allowTransparency="true"';
+		if (!empty($params['maxwidth'])) {
+			$width = $params['maxwidth'];
+		} else {
+			if (!empty($params['maxheight'])){
+				$width = min(500, (int) ($params['maxheight'] - 100));
+			}
+		}
 
-            $iframe = '<iframe ' . implode(' ', $attr) . '></iframe>';
-            if (!empty($response['height'])) {
-                $height = $response['height'];
-            } else {
-                $height = min(680, (int) ($response['width'] + 100));
-            }
+		$table = array(
+			'{url}' => rawurlencode($this->url),
+			'{md5}' => substr(md5($this->url), 0, 5),
+			'{width}' => $width,
+			'{height}' => $height,
+		);
 
-            $table = array(
-                '{url}' => rawurlencode($this->url),
-                '{md5}' => substr(md5($this->url), 0, 5),
-                '{width}' => $response['width'],
-                '{height}' => $height,
-            );
+		// Replace the html response
+		$response['html'] = str_replace(array_keys($table), array_values($table), $iframe);
 
-            // Replace the html response
-            $response['html'] = str_replace(array_keys($table), array_values($table), $iframe);
-        }
-
-        return $response;
+		return $response;
     }
 
 }

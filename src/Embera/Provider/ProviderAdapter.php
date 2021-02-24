@@ -21,6 +21,8 @@ use Embera\Url;
  */
 abstract class ProviderAdapter
 {
+	/**  @var bool $shouldSendRequest It determins wether we should send api request to get the embed data or we will create embed data manually */
+	protected $shouldSendRequest = true;
     /**  @var Url */
     protected $url;
 
@@ -133,4 +135,13 @@ abstract class ProviderAdapter
         static::$hosts[] = $host;
     }
 
+	/** inline {@inheritdoc} */
+	public function shouldSendRequest()
+	{
+		return (bool) $this->shouldSendRequest;
+	}
+	/** inline {@inheritdoc} */
+	public function getStaticResponse() {
+		return [];
+	}
 }

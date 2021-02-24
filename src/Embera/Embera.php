@@ -17,6 +17,7 @@ use Embera\Http\OembedClient;
 use Embera\Http\HttpClientInterface;
 use Embera\Html\IgnoreTags;
 use Embera\Html\ResponsiveEmbeds;
+use Embera\Provider\ProviderInterface;
 use Embera\ProviderCollection\ProviderCollectionInterface;
 use Embera\ProviderCollection\DefaultProviderCollection;
 
@@ -137,11 +138,19 @@ class Embera
     public function getUrlData($urls)
     {
         $return = [];
+        /**
+         * @var string $url
+         * @var ProviderInterface $provider
+         */
         foreach ($this->providerCollection->findProviders($urls) as $url => $provider) {
             try {
+	            if ( $provider->shouldSendRequest() ) {
+		            $oembedClient = new OembedClient($this->config, $this->httpClient);
+		            $response = $oembedClient->getResponseFrom($provider);
+				}else{
+	            	$response = $provider->getStaticResponse();
+	            }
 
-                $oembedClient = new OembedClient($this->config, $this->httpClient);
-                $response = $oembedClient->getResponseFrom($provider);
 
                 if ($this->config['responsive'] && !$provider->hasResponsiveSupport()) {
                     $responsive = new ResponsiveEmbeds();
