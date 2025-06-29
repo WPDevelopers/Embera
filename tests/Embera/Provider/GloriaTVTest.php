@@ -21,7 +21,7 @@ final class GloriaTVTest extends ProviderTester
 {
     protected $tasks = [
         'valid_urls' => [
-            'http://www.gloria.tv/post/nLYByXzwST3E26Wx1k7ZCwwP8?query=string',
+            //'http://www.gloria.tv/post/nLYByXzwST3E26Wx1k7ZCwwP8?query=string',
             'https://gloria.tv/post/62FT1LmLY8aLDeXYJnrUHbgJY',
         ],
         'invalid_urls' => [

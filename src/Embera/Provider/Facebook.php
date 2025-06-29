@@ -16,14 +16,19 @@ use Embera\Url;
 
 /**
  * Facebook Provider
+ * Connect with friends and the world around you on Facebook.
+ * This Provider Requires the use of an access_token provided by Facebook.
+ * Example: `$embera = new Embera([ 'facebook_access_token' => 'yourtokenforfacebook' ]);`
+ *
  * @link https://facebook.com
+ * @see https://developers.facebook.com/docs/plugins/oembed-endpoints
  */
 class Facebook extends ProviderAdapter implements ProviderInterface
 {
 	/** inline {@inheritdoc} */
 	protected $shouldSendRequest = false;
     /** inline {@inheritdoc} */
-    protected $endpoint = 'https://graph.facebook.com/v8.0/oembed_{type}';
+    protected $endpoint = 'https://graph.facebook.com/v16.0/oembed_{type}';
 
     /** inline {@inheritdoc} */
     protected static $hosts = [
@@ -31,13 +36,13 @@ class Facebook extends ProviderAdapter implements ProviderInterface
     ];
 
     /** inline {@inheritdoc} */
-    protected $allowedParams = [ 'maxwidth', 'maxheight', 'callback', 'omitscript', 'breaking_change', 'access_token', 'fields' ];
+    protected $allowedParams = [ 'maxwidth', 'maxheight', 'callback', 'omitscript', 'breaking_change', 'access_token', 'fields', 'locale' ];
 
     /** inline {@inheritdoc} */
     protected $httpsSupport = true;
 
     /** inline {@inheritdoc} */
-    protected $responsiveSupport = false;
+    protected $responsiveSupport = true;
 
     /** Patterns that match posts urls */
     protected $postPatterns = [
@@ -94,6 +99,11 @@ class Facebook extends ProviderAdapter implements ProviderInterface
          * https://www.facebook.com/video.php?v={video-id}
          */
         '~facebook\.com/video\.php\?(?:id|v)=(?:[^ ]+)~i',
+        
+         /**
+        * https://www.facebook.com/watch?v={video-id}
+         */
+        '~facebook\.com/watch\?v=(?:[^ ]+)~i',
     ];
 
     /** Patterns that match page urls */

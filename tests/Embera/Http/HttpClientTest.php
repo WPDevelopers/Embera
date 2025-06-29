@@ -17,6 +17,10 @@ class HttpClientTest extends TestCase
 {
     protected function fetchData($useCurl = true)
     {
+        if (defined('GITHUBTESTS')) {
+            $this->markTestSkipped('Skipping because of Github Actions');
+        }
+
         $ua = 'PHP/Embera Test - ' . date('Y-m-d') . ' / Mozilla/5.0 Compatible';
         $http = new HttpClient([
             'use_curl' => (bool) $useCurl,
@@ -47,6 +51,10 @@ class HttpClientTest extends TestCase
 
     public function testCanDetectInvalidUrl()
     {
+        if (defined('GITHUBTESTS')) {
+            $this->markTestSkipped('Skipping because of Github Actions');
+        }
+
         $this->expectException('\InvalidArgumentException');
 
         $http = new HttpClient();
@@ -55,6 +63,10 @@ class HttpClientTest extends TestCase
 
     public function testCurlCanDetectInvalidStatusCode()
     {
+        if (defined('GITHUBTESTS')) {
+            $this->markTestSkipped('Skipping because of Github Actions');
+        }
+
         $this->expectException('\Exception');
 
         $ua = 'PHP/Embera Test - ' . date('Y-m-d');

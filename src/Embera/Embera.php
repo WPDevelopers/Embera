@@ -28,7 +28,7 @@ use Embera\ProviderCollection\DefaultProviderCollection;
 class Embera
 {
     /** @var string Current Library Version */
-    const VERSION = '2.0.16';
+    const VERSION = '2.0.42';
 
     /**
      * Constants describing how the library is
@@ -74,6 +74,9 @@ class Embera
             'height' => 0,
             'maxheight' => 0,
             'maxwidth' => 0,
+            'referer' => '',
+            'curl_params' => [],
+            'file_get_contents_params' => [],
         ], $config);
 
         $this->config['maxwidth'] = max($this->config['width'], $this->config['maxwidth']);
@@ -98,7 +101,7 @@ class Embera
     /**
      * Embeds known/available services into the given text.
      *
-     * @param string $text
+     * @param mixed $text
      * @return string
      */
     public function autoEmbed($text)

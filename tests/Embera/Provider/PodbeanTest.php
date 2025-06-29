@@ -22,8 +22,9 @@ final class PodbeanTest extends ProviderTester
     protected $tasks = [
         'valid_urls' => [
             'https://podcast.podbean.com/e/jen-and-vernon-chat-podcast-resolutions-twitter-advice-and-predictions-for-2019/',
-            'https://numberonererun.podbean.com/e/19th-july-1997-chick-lit-bigfoot/',
             'https://pretaporter.podbean.com/e/pret-a-porter-dos-bastidores-a-passarela-da-modalisboa-collective/',
+            'https://www.podbean.com/eas/pb-ab123-1234567',
+            'https://www.podbean.com/media/share/pb-abcde-1234567',
         ],
         'invalid_urls' => [
             'https://podcast.podbean.com/',

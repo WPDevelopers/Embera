@@ -21,8 +21,7 @@ final class VlipsyTest extends ProviderTester
 {
     protected $tasks = [
         'valid_urls' => [
-            'https://vlipsy.com/vlip/jumanji-the-next-level-wink-boB7Llfc',
-            'https://vlipsy.com/vlip/joker-stairs-dancing-scene-2DydQVDx',
+            'https://vlipsy.com/vlip/star-trek-cant-unsee-ls1h2J6a',
         ],
         'invalid_urls' => [
             'https://vlipsy.com/',

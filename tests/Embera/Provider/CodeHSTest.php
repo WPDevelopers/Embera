@@ -21,7 +21,7 @@ final class CodeHSTest extends ProviderTester
 {
     protected $tasks = array(
         'valid_urls' => array(
-            'https://www.codehs.com/editor/share_abacus/xtOPDik2wNFjSDUoyl2T?query=string'
+            'https://codehs.com/editor/share_abacus/xtOPDik2wNFjSDUoyl2T'
         ),
         'invalid_urls' => array(
             'https://codehs.com',

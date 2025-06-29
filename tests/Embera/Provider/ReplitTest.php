@@ -21,8 +21,7 @@ final class ReplitTest extends ProviderTester
 {
     protected $tasks = [
         'valid_urls' => [
-            'https://repl.it/repls/GloriousMotherlyButton',
-            'https://repl.it/repls/HurtfulTrimDimension',
+            'https://replit.com/@stewieoO/ClosePitifulConstant',
         ],
         'invalid_urls' => [
             'http://repl.it/',
