@@ -58,13 +58,37 @@ class Embera
     /**
      * Constructor
      *
+     * $collection and $httpClient are optional and checked at runtime rather
+     * than type-declared: a typed parameter defaulting to null is implicitly
+     * nullable, which PHP 8.4 deprecates, and the explicit `?Type` form needs
+     * PHP 7.1 while this library supports PHP 5.6.
+     *
      * @param array $config
-     * @param ProviderCollectionInterface $collection
-     * @param HttpClientInterface $httpClient
+     * @param ProviderCollectionInterface|null $collection
+     * @param HttpClientInterface|null $httpClient
      * @return void
+     * @throws \InvalidArgumentException When $collection or $httpClient is neither null nor of the expected type.
      */
-    public function __construct(array $config = [], ProviderCollectionInterface $collection = null, HttpClientInterface $httpClient = null)
+    public function __construct(array $config = [], $collection = null, $httpClient = null)
     {
+        if ($collection !== null && !$collection instanceof ProviderCollectionInterface) {
+            throw new \InvalidArgumentException(sprintf(
+                'Argument 2 passed to %s() must implement %s or be null, %s given',
+                __METHOD__,
+                ProviderCollectionInterface::class,
+                is_object($collection) ? get_class($collection) : gettype($collection)
+            ));
+        }
+
+        if ($httpClient !== null && !$httpClient instanceof HttpClientInterface) {
+            throw new \InvalidArgumentException(sprintf(
+                'Argument 3 passed to %s() must implement %s or be null, %s given',
+                __METHOD__,
+                HttpClientInterface::class,
+                is_object($httpClient) ? get_class($httpClient) : gettype($httpClient)
+            ));
+        }
+
         $this->config = array_merge([
             'https_only' => false,
             'fake_responses' => self::ALLOW_FAKE_RESPONSES,
